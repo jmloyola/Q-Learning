@@ -14,7 +14,7 @@
 #define SOCKET_PORT 8000
 
 //set serial port for linux
-  kRobot r("/dev/ttyUSB0",true);
+  //kRobot r("/dev/ttyUSB0",false);
 
 int send_to_khepera(char *command){
   int len=strlen(command),i=2,acum=0,j,leftSpeed,rightSpeed,ret;
@@ -507,7 +507,7 @@ int main()
   
   /*Se crea el socket*/
   des_socket = socket(AF_INET, SOCK_STREAM, 0);
-  
+  printf("LALALLALALA \n");
   /*Verifica si fue creado*/
   if(des_socket < 0)
     {
@@ -564,64 +564,64 @@ int main()
       answer=send_to_khepera("17");
       buffer[0]='\0';
       for(i=0;i<8;i++){
-		switch(i){
-		case 0: {
-		  answer=send_to_khepera("19,0");
-		  num[0]='\0';
-		  sprintf(num,"%d,",answer);
-		  strcat(buffer,num);
-		  break;
-		}
-		case 1: {
-		  answer=send_to_khepera("19,1");
-		  num[0]='\0';
-		  sprintf(num,"%d,",answer);
-		  strcat(buffer,num);
-		  break;
-		}
-		case 2: {
-		  answer=send_to_khepera("19,2");
-		  num[0]='\0';
-		  sprintf(num,"%d,",answer);
-		  strcat(buffer,num);
-		  break;
-		}
-		case 3: {
-		  answer=send_to_khepera("19,3");
-		  num[0]='\0';
-		  sprintf(num,"%d,",answer);
-		  strcat(buffer,num);
-		  break;
-		}
-		case 4: {
-		  answer=send_to_khepera("19,4");
-		  num[0]='\0';
-		  sprintf(num,"%d,",answer);
-		  strcat(buffer,num);
-		  break;
-		}
-		case 5: {
-		  answer=send_to_khepera("19,5");
-		  num[0]='\0';
-		  sprintf(num,"%d,",answer);
-		  strcat(buffer,num);
-		  break;
-		}
-		case 6: {
-		  answer=send_to_khepera("19,6");
-		  num[0]='\0';
-		  sprintf(num,"%d,",answer);
-		  strcat(buffer,num);
-		  break;
-		}
-		case 7: {
-		  answer=send_to_khepera("19,7");
-		  num[0]='\0';
-		  sprintf(num,"%d",answer);
-		  strcat(buffer,num);
-		  break;
-		}
-		}
+	switch(i){
+	case 0: {
+	  answer=send_to_khepera("19,0");
+	  num[0]='\0';
+	  sprintf(num,"%d,",answer);
+	  strcat(buffer,num);
+	  break;
+	}
+	case 1: {
+	  answer=send_to_khepera("19,1");
+	  num[0]='\0';
+	  sprintf(num,"%d,",answer);
+	  strcat(buffer,num);
+	  break;
+	}
+	case 2: {
+	  answer=send_to_khepera("19,2");
+	  num[0]='\0';
+	  sprintf(num,"%d,",answer);
+	  strcat(buffer,num);
+	  break;
+	}
+	case 3: {
+	  answer=send_to_khepera("19,3");
+	  num[0]='\0';
+	  sprintf(num,"%d,",answer);
+	  strcat(buffer,num);
+	  break;
+	}
+	case 4: {
+	  answer=send_to_khepera("19,4");
+	  num[0]='\0';
+	  sprintf(num,"%d,",answer);
+	  strcat(buffer,num);
+	  break;
+	}
+	case 5: {
+	  answer=send_to_khepera("19,5");
+	  num[0]='\0';
+	  sprintf(num,"%d,",answer);
+	  strcat(buffer,num);
+	  break;
+	}
+	case 6: {
+	  answer=send_to_khepera("19,6");
+	  num[0]='\0';
+	  sprintf(num,"%d,",answer);
+	  strcat(buffer,num);
+	  break;
+	}
+	case 7: {
+	  answer=send_to_khepera("19,7");
+	  num[0]='\0';
+	  sprintf(num,"%d",answer);
+	  strcat(buffer,num);
+	  break;
+	}
+	}
       }
     } 
     else if(!strcmp(buffer,"24")){
@@ -629,64 +629,64 @@ int main()
       answer=send_to_khepera("20");
       buffer[0]='\0';
       for(i=0;i<8;i++){
-		switch(i){
-		case 0: {
-		  answer=send_to_khepera("22,0");
-		  num[0]='\0';
-		  sprintf(num,"%d,",answer);
-		  strcat(buffer,num);
-		  break;
-		}
-		case 1: {
-		  answer=send_to_khepera("22,1");
-		  num[0]='\0';
-		  sprintf(num,"%d,",answer);
-		  strcat(buffer,num);
-		  break;
-		}
-		case 2: {
-		  answer=send_to_khepera("22,2");
-		  num[0]='\0';
-		  sprintf(num,"%d,",answer);
-		  strcat(buffer,num);
-		  break;
-		}
-		case 3: {
-		  answer=send_to_khepera("22,3");
-		  num[0]='\0';
-		  sprintf(num,"%d,",answer);
-		  strcat(buffer,num);
-		  break;
-		}
-		case 4: {
-		  answer=send_to_khepera("22,4");
-		  num[0]='\0';
-		  sprintf(num,"%d,",answer);
-		  strcat(buffer,num);
-		  break;
-		}
-		case 5: {
-		  answer=send_to_khepera("22,5");
-		  num[0]='\0';
-		  sprintf(num,"%d,",answer);
-		  strcat(buffer,num);
-		  break;
-		}
-		case 6: {
-		  answer=send_to_khepera("22,6");
-		  num[0]='\0';
-		  sprintf(num,"%d,",answer);
-		  strcat(buffer,num);
-		  break;
-		}
-		case 7: {
-		  answer=send_to_khepera("22,7");
-		  num[0]='\0';
-		  sprintf(num,"%d",answer);
-		  strcat(buffer,num);
-		  break;
-		}
-		}
+	switch(i){
+	case 0: {
+	  answer=send_to_khepera("22,0");
+	  num[0]='\0';
+	  sprintf(num,"%d,",answer);
+	  strcat(buffer,num);
+	  break;
+	}
+	case 1: {
+	  answer=send_to_khepera("22,1");
+	  num[0]='\0';
+	  sprintf(num,"%d,",answer);
+	  strcat(buffer,num);
+	  break;
+	}
+	case 2: {
+	  answer=send_to_khepera("22,2");
+	  num[0]='\0';
+	  sprintf(num,"%d,",answer);
+	  strcat(buffer,num);
+	  break;
+	}
+	case 3: {
+	  answer=send_to_khepera("22,3");
+	  num[0]='\0';
+	  sprintf(num,"%d,",answer);
+	  strcat(buffer,num);
+	  break;
+	}
+	case 4: {
+	  answer=send_to_khepera("22,4");
+	  num[0]='\0';
+	  sprintf(num,"%d,",answer);
+	  strcat(buffer,num);
+	  break;
+	}
+	case 5: {
+	  answer=send_to_khepera("22,5");
+	  num[0]='\0';
+	  sprintf(num,"%d,",answer);
+	  strcat(buffer,num);
+	  break;
+	}
+	case 6: {
+	  answer=send_to_khepera("22,6");
+	  num[0]='\0';
+	  sprintf(num,"%d,",answer);
+	  strcat(buffer,num);
+	  break;
+	}
+	case 7: {
+	  answer=send_to_khepera("22,7");
+	  num[0]='\0';
+	  sprintf(num,"%d",answer);
+	  strcat(buffer,num);
+	  break;
+	}
+	}
       }
     } 
     else if(!strcmp(buffer,"32")){
