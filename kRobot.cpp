@@ -783,7 +783,7 @@ bool kRobot::readProxSensors()
   int comma;
 
   if (verbose)
-    cout << reply << endl;
+    cout << " reading sensors... " <<  reply << endl;
 
   //if correct responce not given return false;
   if (reply[0] != 'n')

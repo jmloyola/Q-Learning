@@ -30,15 +30,15 @@ public class SimpleSocketClient
   public SimpleSocketClient()
   {
     String testServerName = "localhost";
-    int port = 8080;
+    int port = 8000;
     try
     {
       // open a socket
       Socket socket = openSocket(testServerName, port);
-      
+
       // write-to, and read-from the socket.
       // in this case just write a simple command to a web server.
-      String result = writeToAndReadFromSocket(socket, "23");
+      String result = writeToAndReadFromSocket(socket, "24");
       
       // print out the result we got back from the server
       System.out.println(result);

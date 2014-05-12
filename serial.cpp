@@ -166,7 +166,7 @@ apstring Serial::Talk(apstring send, int size)
 
   cSend[i] = '\0';
 if (VERBOSE)
-cout << "Comando enviado al puerto="<< cSend << endl;
+cout << "El Comando enviado al puerto es "<< cSend << endl;
 
   int tries = 0;
 
