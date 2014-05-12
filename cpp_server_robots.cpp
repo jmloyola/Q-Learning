@@ -1,12 +1,12 @@
 #include "apstring.h"
 #include "kRobot.h"
 #include <iostream>
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
-#include<unistd.h>
-#include<sys/socket.h>
-#include<sys/types.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/socket.h>
+#include <sys/types.h>
 #include <netinet/in.h> /* definition of struct sockaddr_in */
 #include <netdb.h>      /* definition of gethostbyname */
 #include <arpa/inet.h>  /* definition of inet_ntoa */
@@ -14,9 +14,9 @@
 #define SOCKET_PORT 8000
 
 //set serial port for linux
-  //kRobot r("/dev/ttyUSB0",false);
 
-int send_to_khepera(char *command){
+
+int send_to_khepera(kRobot r, char *command){
   int len=strlen(command),i=2,acum=0,j,leftSpeed,rightSpeed,ret;
   char tmp[15];
 
@@ -51,11 +51,11 @@ int send_to_khepera(char *command){
      *                 completed sucessfully, false otherwise.
      **************************************************************************************/
     
-    i++;//Apunto al primer par·metro
+    i++;//Apunto al primer par√°metro
     for(j=0;command[i]!=',';j++,i++) tmp[j]=command[i];
     tmp[j]='\0';
     leftSpeed=atoi(tmp);
-    i++;//Apunto al segundo par·metro
+    i++;//Apunto al segundo par√°metro
     for(j=0;command[i]!='\0';j++,i++) tmp[j]=command[i];
     tmp[j]='\0';
     rightSpeed=atoi(tmp);
@@ -75,7 +75,7 @@ int send_to_khepera(char *command){
      *                 completed sucessfully, false otherwise.
      **************************************************************************************/
 
-    i++;//Apunto al par·metro
+    i++;//Apunto al par√°metro
     for(j=0;command[i]!='\0';j++,i++) tmp[j]=command[i];
     tmp[j]='\0';
     leftSpeed=atoi(tmp);//Uso leftSpeed para guardar la distancia
@@ -93,11 +93,11 @@ int send_to_khepera(char *command){
      *                 completed sucessfully, false otherwise.
      **************************************************************************************/
 
-    i++;//Apunto al primer par·metro
+    i++;//Apunto al primer par√°metro
     for(j=0;command[i]!=',';j++,i++) tmp[j]=command[i];
     tmp[j]='\0';
     leftSpeed=atoi(tmp);
-    i++;//Apunto al segundo par·metro
+    i++;//Apunto al segundo par√°metro
     for(j=0;command[i]!='\0';j++,i++) tmp[j]=command[i];
     tmp[j]='\0';
     rightSpeed=atoi(tmp);
@@ -117,7 +117,7 @@ int send_to_khepera(char *command){
      *                 completed sucessfully, false otherwise.
      **************************************************************************************/
     
-    i++;//Apunto al par·metro
+    i++;//Apunto al par√°metro
     for(j=0;command[i]!='\0';j++,i++) tmp[j]=command[i];
     tmp[j]='\0';
     leftSpeed=atoi(tmp);//Uso leftSpeed para guardar la distancia
@@ -148,7 +148,7 @@ int send_to_khepera(char *command){
      *                 completed sucessfully, false otherwise.
      **************************************************************************************/
     
-    i++;//Apunto al par·metro
+    i++;//Apunto al par√°metro
     for(j=0;command[i]!='\0';j++,i++) tmp[j]=command[i];
     tmp[j]='\0';
     leftSpeed=atoi(tmp);//Uso leftSpeed para guardar los grados
@@ -167,7 +167,7 @@ int send_to_khepera(char *command){
      *                 completed sucessfully, false otherwise.
      **************************************************************************************/
     
-    i++;//Apunto al par·metro
+    i++;//Apunto al par√°metro
     for(j=0;command[i]!='\0';j++,i++) tmp[j]=command[i];
     tmp[j]='\0';
     leftSpeed=atoi(tmp);//Uso leftSpeed para guardar los grados
@@ -235,11 +235,11 @@ int send_to_khepera(char *command){
      *                 completed sucessfully, false otherwise.
      **************************************************************************************/
 
-    i++;//Apunto al primer par·metro
+    i++;//Apunto al primer par√°metro
     for(j=0;command[i]!=',';j++,i++) tmp[j]=command[i];
     tmp[j]='\0';
     leftSpeed=atoi(tmp);
-    i++;//Apunto al segundo par·metro
+    i++;//Apunto al segundo par√°metro
     for(j=0;command[i]!='\0';j++,i++) tmp[j]=command[i];
     tmp[j]='\0';
     rightSpeed=atoi(tmp);
@@ -282,14 +282,14 @@ int send_to_khepera(char *command){
      *                 completed sucessfully, false otherwise.
      **************************************************************************************/
    
-    i++;//Apunto al primer par·metro
+    i++;//Apunto al primer par√°metro
     for(j=0;command[i]!=',';j++,i++) tmp[j]=command[i];
     tmp[j]='\0';
-    leftSpeed=atoi(tmp);//Uso leftSpeed para guardar la aceleraciÛn izquierda
-    i++;//Apunto al segundo par·metro
+    leftSpeed=atoi(tmp);//Uso leftSpeed para guardar la aceleraci√≥n izquierda
+    i++;//Apunto al segundo par√°metro
     for(j=0;command[i]!='\0';j++,i++) tmp[j]=command[i];
     tmp[j]='\0';
-    rightSpeed=atoi(tmp);//Uso rightSpeed para guardar la aceleraciÛn derecha
+    rightSpeed=atoi(tmp);//Uso rightSpeed para guardar la aceleraci√≥n derecha
     if(r.setWheelAcceleration(leftSpeed, rightSpeed)) ret=1;
     else ret=0;
 
@@ -334,10 +334,10 @@ int send_to_khepera(char *command){
      * Postconditions: Value returned, 0<=val<1024, larger magnitidue is less light
      **************************************************************************************/
 
-    i++;//Apunto al par·metro
+    i++;//Apunto al par√°metro
     for(j=0;command[i]!='\0';j++,i++) tmp[j]=command[i];
     tmp[j]='\0';
-    leftSpeed=atoi(tmp);//Uso leftSpeed para guardar el n˙mero de sensor
+    leftSpeed=atoi(tmp);//Uso leftSpeed para guardar el n√∫mero de sensor
     ret=r.getLightSensor(leftSpeed);
 
     break;
@@ -381,19 +381,20 @@ int send_to_khepera(char *command){
      * Postconditions: Value returned, 0<=val<1024, larger magnitidue is closer.
      **************************************************************************************/
   
-    i++;//Apunto al par·metro
+    i++;//Apunto al par√°metro
     for(j=0;command[i]!='\0';j++,i++) tmp[j]=command[i];
     tmp[j]='\0';
-    leftSpeed=atoi(tmp);//Uso leftSpeed para guardar el n˙mero de sensor
+    leftSpeed=atoi(tmp);//Uso leftSpeed para guardar el n√∫mero de sensor
     ret=r.getProxSensor(leftSpeed);
     
+    printf("devolviendo %d\n", ret);
     break;
   }
-  case 23: {//Caso en que se piden todos los valores de los sensores de luz - Nunca entra por ac·
+  case 23: {//Caso en que se piden todos los valores de los sensores de luz - Nunca entra por ac√°
 
   break;
   }
-  case 24: {//Caso en que se piden todos los valores de los sensores de proximidad - Nunca entra por ac·
+  case 24: {//Caso en que se piden todos los valores de los sensores de proximidad - Nunca entra por ac√°
 
     break;
   }
@@ -498,7 +499,8 @@ return ret;
 
 int main()
 {
-  
+   kRobot r("/dev/ttyUSB0",true);
+
   /*Declaraciones de variables*/
   int des_socket, conex_val, nuevo_socket, long_server, long_cliente, pid_servidor;
   struct sockaddr_in dir_serv, dir_cli;
@@ -507,7 +509,7 @@ int main()
   
   /*Se crea el socket*/
   des_socket = socket(AF_INET, SOCK_STREAM, 0);
-  printf("LALALLALALA \n");
+  
   /*Verifica si fue creado*/
   if(des_socket < 0)
     {
@@ -546,8 +548,8 @@ int main()
     nuevo_socket = accept(des_socket, (struct sockaddr *) &dir_cli, (socklen_t *)&long_cliente);
     if(nuevo_socket < 0)
       {         
-	printf("SERVIDOR: ERROR AL TRATAR DE RECUPERAR EL PEDIDO DE CONEXION DE LA COLA...\n");
-	return 2;
+  printf("SERVIDOR: ERROR AL TRATAR DE RECUPERAR EL PEDIDO DE CONEXION DE LA COLA...\n");
+  return 2;
       }
     /*Inicializa buffer*/ 
     buffer[0]='\0';
@@ -555,138 +557,138 @@ int main()
     /*Recibe el mensaje del nuevo socket creado con la llamada al sistema accept*/
     recv(nuevo_socket, buffer, 100, 0);
 
-    //printf("SERVER: recibo en buffer %s\n",buffer);
+    printf("SERVER: recibo en buffer %s\n",buffer);
 
     /*Manda el comando al khepera y recibe la respuesta*/
 
     if(!strcmp(buffer,"23")){
       //Caso en que se piden todos los valores de los sensores de luz
-      answer=send_to_khepera("17");
+      answer=send_to_khepera(r, "17");
       buffer[0]='\0';
       for(i=0;i<8;i++){
-	switch(i){
-	case 0: {
-	  answer=send_to_khepera("19,0");
-	  num[0]='\0';
-	  sprintf(num,"%d,",answer);
-	  strcat(buffer,num);
-	  break;
-	}
-	case 1: {
-	  answer=send_to_khepera("19,1");
-	  num[0]='\0';
-	  sprintf(num,"%d,",answer);
-	  strcat(buffer,num);
-	  break;
-	}
-	case 2: {
-	  answer=send_to_khepera("19,2");
-	  num[0]='\0';
-	  sprintf(num,"%d,",answer);
-	  strcat(buffer,num);
-	  break;
-	}
-	case 3: {
-	  answer=send_to_khepera("19,3");
-	  num[0]='\0';
-	  sprintf(num,"%d,",answer);
-	  strcat(buffer,num);
-	  break;
-	}
-	case 4: {
-	  answer=send_to_khepera("19,4");
-	  num[0]='\0';
-	  sprintf(num,"%d,",answer);
-	  strcat(buffer,num);
-	  break;
-	}
-	case 5: {
-	  answer=send_to_khepera("19,5");
-	  num[0]='\0';
-	  sprintf(num,"%d,",answer);
-	  strcat(buffer,num);
-	  break;
-	}
-	case 6: {
-	  answer=send_to_khepera("19,6");
-	  num[0]='\0';
-	  sprintf(num,"%d,",answer);
-	  strcat(buffer,num);
-	  break;
-	}
-	case 7: {
-	  answer=send_to_khepera("19,7");
-	  num[0]='\0';
-	  sprintf(num,"%d",answer);
-	  strcat(buffer,num);
-	  break;
-	}
-	}
+  switch(i){
+  case 0: {
+    answer=send_to_khepera(r, "19,0");
+    num[0]='\0';
+    sprintf(num,"%d,",answer);
+    strcat(buffer,num);
+    break;
+  }
+  case 1: {
+    answer=send_to_khepera(r, "19,1");
+    num[0]='\0';
+    sprintf(num,"%d,",answer);
+    strcat(buffer,num);
+    break;
+  }
+  case 2: {
+    answer=send_to_khepera(r, "19,2");
+    num[0]='\0';
+    sprintf(num,"%d,",answer);
+    strcat(buffer,num);
+    break;
+  }
+  case 3: {
+    answer=send_to_khepera(r, "19,3");
+    num[0]='\0';
+    sprintf(num,"%d,",answer);
+    strcat(buffer,num);
+    break;
+  }
+  case 4: {
+    answer=send_to_khepera(r, "19,4");
+    num[0]='\0';
+    sprintf(num,"%d,",answer);
+    strcat(buffer,num);
+    break;
+  }
+  case 5: {
+    answer=send_to_khepera(r, "19,5");
+    num[0]='\0';
+    sprintf(num,"%d,",answer);
+    strcat(buffer,num);
+    break;
+  }
+  case 6: {
+    answer=send_to_khepera(r, "19,6");
+    num[0]='\0';
+    sprintf(num,"%d,",answer);
+    strcat(buffer,num);
+    break;
+  }
+  case 7: {
+    answer=send_to_khepera(r, "19,7");
+    num[0]='\0';
+    sprintf(num,"%d",answer);
+    strcat(buffer,num);
+    break;
+  }
+  }
       }
     } 
     else if(!strcmp(buffer,"24")){
       //Caso en que se piden todos los valores de los sensores de proximidad
-      answer=send_to_khepera("20");
+      answer=send_to_khepera(r, "20");
       buffer[0]='\0';
       for(i=0;i<8;i++){
-	switch(i){
-	case 0: {
-	  answer=send_to_khepera("22,0");
-	  num[0]='\0';
-	  sprintf(num,"%d,",answer);
-	  strcat(buffer,num);
-	  break;
-	}
-	case 1: {
-	  answer=send_to_khepera("22,1");
-	  num[0]='\0';
-	  sprintf(num,"%d,",answer);
-	  strcat(buffer,num);
-	  break;
-	}
-	case 2: {
-	  answer=send_to_khepera("22,2");
-	  num[0]='\0';
-	  sprintf(num,"%d,",answer);
-	  strcat(buffer,num);
-	  break;
-	}
-	case 3: {
-	  answer=send_to_khepera("22,3");
-	  num[0]='\0';
-	  sprintf(num,"%d,",answer);
-	  strcat(buffer,num);
-	  break;
-	}
-	case 4: {
-	  answer=send_to_khepera("22,4");
-	  num[0]='\0';
-	  sprintf(num,"%d,",answer);
-	  strcat(buffer,num);
-	  break;
-	}
-	case 5: {
-	  answer=send_to_khepera("22,5");
-	  num[0]='\0';
-	  sprintf(num,"%d,",answer);
-	  strcat(buffer,num);
-	  break;
-	}
-	case 6: {
-	  answer=send_to_khepera("22,6");
-	  num[0]='\0';
-	  sprintf(num,"%d,",answer);
-	  strcat(buffer,num);
-	  break;
-	}
-	case 7: {
-	  answer=send_to_khepera("22,7");
-	  num[0]='\0';
-	  sprintf(num,"%d",answer);
-	  strcat(buffer,num);
-	  break;
-	}
-	}
+            switch(i){
+            case 0: {
+              answer=send_to_khepera(r, "22,0");
+              num[0]='\0';
+              sprintf(num,"%d,",answer);
+              strcat(buffer,num);
+              break;
+            }
+            case 1: {
+              answer=send_to_khepera(r, "22,1");
+              num[0]='\0';
+              sprintf(num,"%d,",answer);
+              strcat(buffer,num);
+              break;
+            }
+            case 2: {
+              answer=send_to_khepera(r, "22,2");
+              num[0]='\0';
+              sprintf(num,"%d,",answer);
+              strcat(buffer,num);
+              break;
+            }
+            case 3: {
+              answer=send_to_khepera(r, "22,3");
+              num[0]='\0';
+              sprintf(num,"%d,",answer);
+              strcat(buffer,num);
+              break;
+            }
+            case 4: {
+              answer=send_to_khepera(r, "22,4");
+              num[0]='\0';
+              sprintf(num,"%d,",answer);
+              strcat(buffer,num);
+              break;
+            }
+            case 5: {
+              answer=send_to_khepera(r, "22,5");
+              num[0]='\0';
+              sprintf(num,"%d,",answer);
+              strcat(buffer,num);
+              break;
+            }
+            case 6: {
+              answer=send_to_khepera(r, "22,6");
+              num[0]='\0';
+              sprintf(num,"%d,",answer);
+              strcat(buffer,num);
+              break;
+            }
+            case 7: {
+              answer=send_to_khepera(r, "22,7");
+              num[0]='\0';
+              sprintf(num,"%d",answer);
+              strcat(buffer,num);
+              break;
+            }
+          }
       }
     } 
     else if(!strcmp(buffer,"32")){
@@ -696,9 +698,9 @@ else if(!strcmp(buffer,"34")){
       
   }
     else if(!strcmp(buffer,"36")){
-	}
+  }
     else{ 
-      answer=send_to_khepera(buffer);
+      answer=send_to_khepera(r, buffer);
       /*Inicializa buffer*/ 
       buffer[0]='\0';
       num[0]='\0';
@@ -706,7 +708,7 @@ else if(!strcmp(buffer,"34")){
       strcat(buffer,num);
     }
 
-    send(nuevo_socket, buffer, strlen(buffer)+1, 0); 	  	
+    send(nuevo_socket, buffer, strlen(buffer)+1, 0);      
     close(nuevo_socket);
     
   }
@@ -714,6 +716,4 @@ else if(!strcmp(buffer,"34")){
   
   return 0;
 }//main
-
-
 
