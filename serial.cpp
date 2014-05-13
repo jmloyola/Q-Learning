@@ -16,11 +16,11 @@
 *   but WITHOUT ANY WARRANTY; without even the implied warranty of
 *
 *   You may obtain a copy of the GNU General Public License by writing to
-*   the Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
+*   the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
 *                                       Boston, MA  02111-1307  USA
 *
 *  Developed by the Computer Science Departmetn, St. Bonaventure University.
-*  Contributors:  Dr. Robert Harlan, Shelley McClarigan, Catherine Mellon, 
+*  Contributors:  Dr. Robert Harlan, Shelley McClarigan, Catherine Mellon,
 *                 Brian C. Zimmel, and Josh Goodberry
 *  Contact: rharlan@cs.sbu.edu
 *           http://web.sbu.edu/cs/roboticsLab
@@ -34,7 +34,7 @@
 *         serial port.  It also includes a function that sends the
 *         commands and receives responses from the robot.
 *
-*         Modified from khep_serial.c written by M. von Holzen and 
+*         Modified from khep_serial.c written by M. von Holzen and
 *         L. Tettoni and released by Olivier Michel as part of the
 *         code we orignially got with the khepera.
 *
@@ -61,11 +61,11 @@
 
 //Public Functions
 
-//Purpose:         Constructor.     
+//Purpose:         Constructor.
 //Preconditions:   None.
-//PostConditions:  Sets Verbose to verbose status passed, message size, 
+//PostConditions:  Sets Verbose to verbose status passed, message size,
 //                   and default timeout and retry.
-Serial::Serial(bool verboseStatus) 
+Serial::Serial(bool verboseStatus)
 {
   VERBOSE = verboseStatus;
   MESSAGE_SIZE = 200;
@@ -78,7 +78,7 @@ Serial::Serial(bool verboseStatus)
 //Purpose:         Display all of the debugging messages on the screen,
 //Preconditions:   None.
 //Postconditions:  VERBOSE set to true.
-void Serial::VerboseOn() 
+void Serial::VerboseOn()
 {
   VERBOSE = true;
 }//end VerboseOn()
@@ -88,29 +88,29 @@ void Serial::VerboseOn()
 //Purpose:         Stops the displaying of all of the debugging messages on the screen.
 //Preconditions:   None.
 //Postconditions:  VERBOSE set to false.
-void Serial::VerboseOff() 
+void Serial::VerboseOff()
 {
   VERBOSE = false;
 }//end VerboseOff()
- 
+
 /**************************************************************************/
 
 //Purpose:         Open connection to Khepera on port passed
-//                 as a parameter e.g., "ttya". 
+//                 as a parameter e.g., "ttya".
 //Preconditions:   Port name is defined
 //Postconditions:  Connection open to given port. Returns true if successful,
 //                 false otherwise.
-bool Serial::Open(apstring portname) 
-{  
+bool Serial::Open(apstring portname)
+{
   if (VERBOSE)
     cout << "Serial::Entering Serial Open" << endl;
-  
+
   int i;
   char buffer[64];
   //if (VERBOSE)
 	//cout << "Serial::buffer=";
   // convert apstring to a c string
-  for (i=0; i<portname.length(); i++){ 
+  for (i=0; i<portname.length(); i++){
     //if (VERBOSE)
 	//cout << portname[i];
     buffer[i] = portname[i];
@@ -149,11 +149,11 @@ bool Serial::Open(apstring portname)
 //Preconditions:   Commands are in the form of a capital letter,
 //                 followed by any parameters needed, ending with
 //                 a carriage return and line feed.
-//Postconditions:  Responses are in the form of a lowercase letter 
+//Postconditions:  Responses are in the form of a lowercase letter
 //                 corresponding to the capital letter command, then
 //                 any data it needs to transmit and a carriage return.
-apstring Serial::Talk(apstring send, int size) 
-{ 
+apstring Serial::Talk(apstring send, int size)
+{
   if (VERBOSE)
     cout << "Serial::Entering Serial Talk" << endl;
 
@@ -170,7 +170,7 @@ cout << "El Comando enviado al puerto es "<< cSend << endl;
 
   int tries = 0;
 
-  do {  
+  do {
     //if write succeeds, read response
     if (write(SERIAL_ID,cSend,send.length()) == send.length())
       {
@@ -200,12 +200,12 @@ cout << "Serial::receive="<< receive << endl;
 //Preconditions:   Connection must be open.
 //Postconditions:  Connection is closed to port. Returns true if successful,
 //                 false otherwise.
-bool Serial::Close() 
-{ 
+bool Serial::Close()
+{
   if (VERBOSE)
-    cout << "Serial::Entering Serial Close"<< endl;
-
+    cout << "Serial::Entering Serial Close  "<<SERIAL_ID<< endl;
   close(SERIAL_ID);
+
 
   if (VERBOSE)
     cout << "Serial::Serial Line Closed" << endl;
@@ -267,11 +267,11 @@ bool Serial::Configure()
 
 /**************************************************************************/
 
-//Purpose:        Reads a line from the robot. 
+//Purpose:        Reads a line from the robot.
 //Preconditions:  None.
-//Postconditions: Returns the size of the line it wrote. 
+//Postconditions: Returns the size of the line it wrote.
 apstring  Serial::Readline(int size)
-{  
+{
   if (VERBOSE)
     cout << "Serial::Entering Serial Readline..." << endl;
 
@@ -294,7 +294,7 @@ if (VERBOSE)
 cout << endl;
 
   buffer[rsize] = '\0';
-  
+
   if (nrd<0)
     {
       if (VERBOSE)
@@ -302,7 +302,7 @@ cout << endl;
       return "";
       //perror("Serial::Readline()");
     }
-  else 
+  else
     {
       if (VERBOSE)
 	cout << "Serial::Read line successfully" << endl;

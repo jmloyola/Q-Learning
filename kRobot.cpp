@@ -7,7 +7,7 @@
 *  X  kRobot.cpp                        X
 *  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 *
-*  Defines the interface for the Khepera robot. 
+*  Defines the interface for the Khepera robot.
 *
 *  Copyright (C) 2001, 2002, 2004 Robert M. Harlan
 *
@@ -21,11 +21,11 @@
 *   GNU General Public License for more details.
 *
 *   You may obtain a copy of the GNU General Public License by writing to
-*   the Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
+*   the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
 *                                       Boston, MA  02111-1307  USA
 *
 *  Developed by the Computer Science Departmetn, St. Bonaventure University.
-*  Contributors:  Dr. Robert Harlan, Shelley McClarigan, Catherine Mellon, 
+*  Contributors:  Dr. Robert Harlan, Shelley McClarigan, Catherine Mellon,
 *                 Brian C. Zimmel, and Josh Goodberry
 *  Contact: rharlan@cs.sbu.edu
 *           http://web.sbu.edu/cs/roboticsLab
@@ -86,12 +86,12 @@
 *     All functions must now return a value.  If no value was returned previously,
 *     it must return a Boolean value.  If the function performs properly, it will
 *     return a true value, false otherwise.  (5/22/01)
-*        
+*
 * Rev 3.2 :  Robert Harlan
-*     Serial.VERBOSE (flag for tracing Serial class methods) and kRobot.verbose (flag for 
+*     Serial.VERBOSE (flag for tracing Serial class methods) and kRobot.verbose (flag for
 *     tracing kRobot class methods)repaired. kRobot.VerboseOff() sets both to false,
 *     veboseOn() sets both to true. Default setting is true for both. (4/15/04)
-*     
+*
 *     Stop has been modified so that neither wheel speeds or wheel acceleration are
 *     modified. Setting them to 0 threw an error in turns unless reset was called, (5/20/04)
 *
@@ -111,11 +111,11 @@
 * Preconditions:   Commands are in the form of a capital letter,
 *                  followed by any parameters needed, ending with
 *                  a carriage return and line feed.
-* Postconditions:  Responses are in the form of a lowercase letter 
+* Postconditions:  Responses are in the form of a lowercase letter
 *                  corresponding to the capital letter command, then
 *                  any data it needs to transmit and a carriage return.
 **************************************************************************************/
-apstring kRobot::send(apstring command) 
+apstring kRobot::send(apstring command)
 {
   apstring reply;
   reply = SerialPort->Talk(command);
@@ -130,18 +130,18 @@ apstring kRobot::send(apstring command)
 * Purpose:        Constructor permits setting of serial port and berbose status.
 * Preconditions:  newPortName is valid serial port if given.
 * Postconditions: verbose set to false (changed later  with the verboseOff() method)
-*                 serial port set to parameter, if none given port set 
+*                 serial port set to parameter, if none given port set
 *                 to "/dev/ttya"; Connection to robot opened.
 *       Note, if you want to see initial communication, create a kRobot object
 *       as follows:   kRobot r("/dev/ttya", true);
 **************************************************************************************/
-kRobot::kRobot(apstring newPortName, bool verboseStatus) 
+kRobot::kRobot(apstring newPortName, bool verboseStatus)
 {
   char ch;
-  
+
   //debugger is initially set on
   //turn off with verboseOff();
-  verbose = verboseStatus; 
+  verbose = verboseStatus;
 
   portname = newPortName;
 
@@ -166,7 +166,7 @@ kRobot::kRobot(apstring newPortName, bool verboseStatus)
       stop();
       reset();
     }
-  
+
 }//end constructor with port parameter
 
 /**************************************************************************************
@@ -174,11 +174,17 @@ kRobot::kRobot(apstring newPortName, bool verboseStatus)
 * Preconditions:  None.
 * Postconditions: Connection closed and serial port deleted.
 **************************************************************************************/
-kRobot::~kRobot() 
-{  
+kRobot::~kRobot()
+{
+//  closeConnection();
+//  delete SerialPort;
+}//end destructor
+int kRobot::cerrar()
+{
   closeConnection();
   delete SerialPort;
-}//end destructor
+  return 0;
+}
 
 /**************************************************************************************
 * Purpose:        Resets the wheel counters to zero. Sets speed and acceleration
@@ -244,7 +250,7 @@ bool kRobot::moveForward()
   strCommand = "D," + strLeftWheel + "," + strRightWheel + "\n";
 
   strReply = send(strCommand);
-  
+
   if(verbose)
     cout << strReply << endl;
 
@@ -257,8 +263,8 @@ bool kRobot::moveForward()
 }//end moveForward()
 
 /**************************************************************************************
-* Purpose:        Makes robot move forward n millimeters. 
-*                 Range is 0 < distance <= 670000 mm. 
+* Purpose:        Makes robot move forward n millimeters.
+*                 Range is 0 < distance <= 670000 mm.
 * Preconditions:  Serial communications open; distance in millimeters.
 * Postconditions: Robot moves forward n millimeters. Returns true if
 *                 completed sucessfully, false otherwise.
@@ -329,7 +335,7 @@ bool kRobot::moveForwardDistance(int distance)
 * Postconditions: Robot moves backwards indefinitely. Returns true if
 *                 completed sucessfully, false otherwise.
 **************************************************************************************/
-bool kRobot::moveBackward() 
+bool kRobot::moveBackward()
 {
   apstring strLeftWheel, strRightWheel, strCommand, strReply;
 
@@ -341,10 +347,10 @@ bool kRobot::moveBackward()
   strCommand = "D,-" + strLeftWheel + ",-" + strRightWheel + "\n";
 
   strReply = send(strCommand);
-  
+
   if(verbose)
     cout << strReply << endl;
-  
+
  if (strReply[0] != 'd')
     {
       return false;
@@ -355,7 +361,7 @@ bool kRobot::moveBackward()
 
 /**************************************************************************************
 * Purpose:        Makes robot move backward n millimeters.
-*                 Range is 0 < distance <= 670000 mm. 
+*                 Range is 0 < distance <= 670000 mm.
 * Preconditions:  Serial communications open; distance in millimeters.
 * Postconditions: Robot moves backwards n millimeters. Returns true if
 *                 completed sucessfully, false otherwise.
@@ -423,7 +429,7 @@ bool kRobot::moveBackwardDistance(int distance)
 * Preconditions:  Serial communications open; robot in motion.
 * Postconditions: Robot stops. Returns true if completed sucessfully, false otherwise.
 **************************************************************************************/
-bool kRobot::stop() 
+bool kRobot::stop()
 {
   //if fails, return false
   if (!updateWheelCounters())
@@ -433,7 +439,7 @@ bool kRobot::stop()
   //if wrong response is given, return false
   if (reply[0] != 'd')
     return false;
- 
+
   if (!updateWheelCounters())
     return false;
 
@@ -442,11 +448,11 @@ bool kRobot::stop()
 
 /**************************************************************************************
 * Purpose:        Makes robot turn left degrees passed as parameter.
-* Preconditions:  0<=degrees<=360; Serial communications open. 
+* Preconditions:  0<=degrees<=360; Serial communications open.
 * Postconditions: Robot turns right n degrees. Returns true if
 //                completed sucessfully, false otherwise.
 **************************************************************************************/
-bool kRobot::turnLeft(int degree) 
+bool kRobot::turnLeft(int degree)
 {
   //if fails return false
   if (!updateWheelCounters())
@@ -463,7 +469,7 @@ bool kRobot::turnLeft(int degree)
   strRightWheel = intToString(wheelSpeeds[1]);
   strLeftAcc = intToString(wheelAccelerations[0]);
   strRightAcc = intToString(wheelAccelerations[1]);
- 
+
   // stop the robot before turning
   reply = send(STOP);
   if (verbose)
@@ -472,7 +478,7 @@ bool kRobot::turnLeft(int degree)
   }
   if (reply[0] != 'd')
     return false;
-  
+
   //set wheel speed and acceleration
   command = "J," + strLeftWheel + "," + strLeftAcc + "," + strRightWheel + "," + strRightAcc + "\n";
 
@@ -491,7 +497,7 @@ bool kRobot::turnLeft(int degree)
     counter++;
   leftCounter = wheelCounters[0] - counter;
   rightCounter = wheelCounters[1] + counter;
-  
+
   //convert wheel counter integers to strings for communication
   leftWheel = intToString(leftCounter);
   rightWheel = intToString(rightCounter);
@@ -523,13 +529,13 @@ bool kRobot::turnLeft(int degree)
 
 /**************************************************************************************
 * Purpose:        Makes robot turn right degrees passed as parameter.
-* Preconditions:  0<=degrees<=360; Serial communications open. 
+* Preconditions:  0<=degrees<=360; Serial communications open.
 * Postconditions: Robot turns right n degrees.  Returns true if
 *                 completed sucessfully, false otherwise.
 **************************************************************************************/
-bool kRobot::turnRight(int degree) 
+bool kRobot::turnRight(int degree)
 {
-  
+
   //if fails return false;
   if (!updateWheelCounters())
     return false;
@@ -582,7 +588,7 @@ bool kRobot::turnRight(int degree)
 
   //send robot
   command = "C," + leftWheel + "," + rightWheel + "\n";
-  
+
   reply = send(command);
   if(verbose)
     cout << reply << endl;
@@ -617,7 +623,7 @@ int kRobot::getLeftWheelCounter()
   updateWheelCounters();
   return wheelCounters[0];
 }//end getLeftWheelCounter()
- 
+
 /**************************************************************************************
 * Purpose:        Reads right wheel counter.
 * Preconditions:  Serial communications open.
@@ -651,7 +657,7 @@ int kRobot::getRightWheelSpeed()
 
 /**************************************************************************************
 * Purpose:        Sets the speed and direction (+/-) of wheel/motor in mm/sec.
-*                 Range is 0 < speed <= 1000 mm/sec. 
+*                 Range is 0 < speed <= 1000 mm/sec.
 * Preconditions:  Serial communications open.
 * Postconditions: Private fields are updated. Returns true if
 *                 completed sucessfully, false otherwise.
@@ -687,7 +693,7 @@ int kRobot::getRightWheelAcceleration()
 
 /**************************************************************************************
 * Purpose:        Sets the acceleration and direction (+/-) of wheel/motor in mm/sec^2.
-*                 Range is 0 < acceleration <= 396875 mm/sec^2. 
+*                 Range is 0 < acceleration <= 396875 mm/sec^2.
 * Preconditions:  Serial communications open.
 * Postconditions: Private fields are updated. Returns true if
 *                 completed sucessfully, false otherwise.
@@ -744,14 +750,14 @@ bool kRobot::readLightSensors()
 /**************************************************************************************
 * Purpose:        Displays the values of each of eight light sensors.
 * Preconditions:  Sensors updated; serial communication open.
-* Postconditions: Values of light sensors displayed, indexed 
+* Postconditions: Values of light sensors displayed, indexed
 *                 0..7 as labeled on Khepera diagram. Returns true if
 *                 completed sucessfully, false otherwise.
 **************************************************************************************/
-bool kRobot::writeLightSensors() 
+bool kRobot::writeLightSensors()
 {
   cout << "Light: " << '\t';
-  
+
   for (int i=0; i<8; i++)
     cout << LightSensors[i] << '\t';
   cout << endl;
@@ -772,12 +778,12 @@ int kRobot::getLightSensor(int s)
 
 /**************************************************************************************
 * Purpose:        Reads the values of each of eight proximity sensors.
-* Preconditions:  Serial communication open. 
-* Postconditions: Stores values of proximity sensors in an array, indexed 
+* Preconditions:  Serial communication open.
+* Postconditions: Stores values of proximity sensors in an array, indexed
 *                 0..7 as labeled on Khepera diagram. Returns true if
 *                 completed sucessfully, false otherwise.
 **************************************************************************************/
-bool kRobot::readProxSensors() 
+bool kRobot::readProxSensors()
 {
   apstring reply = send("N\n");
   int comma;
@@ -802,14 +808,14 @@ bool kRobot::readProxSensors()
 /**************************************************************************************
 * Purpose:        Displays the values of the proximity sensors to the screen.
 * Preconditions:  Array contains values.
-* Postconditions: Values of proximity sensors displayed, indexed 
+* Postconditions: Values of proximity sensors displayed, indexed
 *                 0..7 as labeled on Khepera diagram. Returns true if
 *                 completed sucessfully, false otherwise.
 **************************************************************************************/
-bool kRobot::writeProxSensors() 
+bool kRobot::writeProxSensors()
 {
   cout << "Prox: " << '\t';
-  
+
   for (int i=0; i<8; i++)
     cout << ProxSensors[i] << '\t';
   cout << endl;
@@ -837,7 +843,7 @@ int kRobot::getProxSensor(int s)
 * Postconditions: Serial.VERBOSE and kRobot.verbose set to true. Returns true if
 *                 completed sucessfully, false otherwise.
 **************************************************************************************/
-bool kRobot::verboseOn() 
+bool kRobot::verboseOn()
 {
   verbose = true;
   SerialPort->VerboseOn();
@@ -852,7 +858,7 @@ bool kRobot::verboseOn()
 * Postconditions: Serial.VERBOSE and kRobot.verbose set to false. Returns true if
 *                 completed sucessfully, false otherwise.
 **************************************************************************************/
-bool kRobot::verboseOff() 
+bool kRobot::verboseOff()
 {
   verbose = false;
   SerialPort->VerboseOff();
@@ -866,7 +872,7 @@ bool kRobot::verboseOff()
 * Postcondition: Stores port name in private field. Returns true if
 *                completed sucessfully, false otherwise.
 **************************************************************************************/
-bool kRobot::setPortName(apstring port) 
+bool kRobot::setPortName(apstring port)
 {
   if (verbose)
     cout << "Changing connection to robot. Please wait..." << endl;
@@ -884,7 +890,7 @@ bool kRobot::setPortName(apstring port)
     cout << "A new connection has been made on: " << port << endl;
   return true;
 }//end getPortName()
-  
+
 /**********************PRIVATE FUNCTIONS***********************/
 /**************************************************************************************
 * Purpose:       Opens the connection to the serial port.
@@ -892,7 +898,7 @@ bool kRobot::setPortName(apstring port)
 * Postcondition: Connection opened to given port. Returns true if
 *                completed sucessfully, false otherwise.
 **************************************************************************************/
-bool kRobot::openConnection() 
+bool kRobot::openConnection()
 {
   if (verbose)
     cout << "kRobot->Opening connection to khepera..." << endl;
@@ -916,7 +922,7 @@ bool kRobot::openConnection()
 * Postconditions:  Connection is closed to port. Returns true if
 *                  completed sucessfully, false otherwise.
 **************************************************************************************/
-bool kRobot::closeConnection() 
+bool kRobot::closeConnection()
 {
   if (!SerialPort->Close())
     {
@@ -924,7 +930,7 @@ bool kRobot::closeConnection()
 	cout << "kRobot->Connection failed to close" << endl;
       return false;
     }
-  
+
   if (verbose)
     cout << "Connection to khepera closed " << endl;
   return true;
@@ -977,13 +983,13 @@ bool kRobot::updateWheelCounters()
   apstring wheelCountReply = "";
   wheelCountReply = send("H\n");
   wheelCountReply = send("H\n");
-  if (verbose) 
+  if (verbose)
   {
 	cout << " response on wheel count in updateWheelCount: " << wheelCountReply << endl;
   }
 
   if (wheelCountReply[0] != 'h')
-  
+
     return false;
 
   int comma = 0;
@@ -1022,34 +1028,34 @@ bool wait(double time){
 }// end wait(double)
 /**************************************************************************************
 * Purpose:       Converts the integer num passed into an apstring and returns it.
-*                Used to create a command string where integer values are passed 
+*                Used to create a command string where integer values are passed
 * Precondition:  num is an integer
 * Postcondition: returns string representation of integer
 **************************************************************************************/
-/*apstring intToString(int num) 
+/*apstring intToString(int num)
 {
   apstring strReply;
   sstream strstTmp;
 
   strstTmp << num;
   getline(strstTmp, strReply);
-  
+
 
   return strReply;
 }//end intToString(int)
 
 */
-apstring intToString(int num) 
+apstring intToString(int num)
 {
-  char aux[30];  
+  char aux[30];
   int i=29,j=0,div=0,rest=0;
   aux[0]='0';
-  aux[1]='\0';	
-  
+  aux[1]='\0';
+
   if(num<0) aux[j++]='-';
  div=abs(num);
  //cout << "intToString:: num=" << num << endl;
-  
+
   while(div!=0){
     rest=div%10;
     div=div/10;
@@ -1076,7 +1082,7 @@ apstring intToString(int num)
 apstring strReply(aux);
 
 //cout << "intToString:: aux=" << aux << "mientras que strReply=" << strReply <<endl;
-  
-  
+
+
   return strReply;
 }//end intToString(int)

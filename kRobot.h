@@ -7,7 +7,7 @@
 *  X  kRobot.h                          X
 *  XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 *
-*  Defines the interface for the Khepera robot. 
+*  Defines the interface for the Khepera robot.
 *  Copyright (C) 2001, 2002, 2004 Robert M. Harlan
 *
 *   This program is free software; you can redistribute it and/or modify
@@ -20,11 +20,11 @@
 *   GNU General Public License for more details.
 *
 *   You may obtain a copy of the GNU General Public License by writing to
-*   the Free Software Foundation, Inc., 59 Temple Place, Suite 330, 
+*   the Free Software Foundation, Inc., 59 Temple Place, Suite 330,
 *                                       Boston, MA  02111-1307  USA
 *
 *  Developed by the Computer Science Departmetn, St. Bonaventure University.
-*  Contributors:  Dr. Robert Harlan, Shelley McClarigan, Catherine Mellon, 
+*  Contributors:  Dr. Robert Harlan, Shelley McClarigan, Catherine Mellon,
 *                 Brian C. Zimmel, and Josh Goodberry
 *  Contact: rharlan@cs.sbu.edu
 *           http://web.sbu.edu/cs/roboticsLab
@@ -87,15 +87,15 @@
 *     return a true value, false otherwise.  (5/22/01)
 *
 *  Rev 3.2 :  Robert Harlan
-*     Serial.VERBOSE (flag for tracing Serial class methods) and kRobot.verbose (flag for 
+*     Serial.VERBOSE (flag for tracing Serial class methods) and kRobot.verbose (flag for
 *     tracing kRobot class methods)repaired. kRobot.VerboseOff() sets both to false,
-*     kRobot.veboseOn() sets both to true.Default parameter sets both to false when a 
-*     kRobot object is created. If true is passed verbose is set to true and all 
+*     kRobot.veboseOn() sets both to true.Default parameter sets both to false when a
+*     kRobot object is created. If true is passed verbose is set to true and all
 *     communication can be seen. (4/15/04)
 *
 *     Stop has been modified so that neither wheel speeds or wheel acceleration are
 *     modified. Setting them to 0 threw an error in turns unless reset was called, (5/20/04)
-*       
+*
 *
 *  Date Created: 3/5/00
 *  Last Update: 5/20/04
@@ -125,8 +125,8 @@
 #include "serial.h"
 
 /**************************************************************************************
-* La instruccion "using" nos permite utilizar la version corta de cada nombre del 
-* programa de la biblioteca estandar de C++ o de cualquier espacio de nombres 
+* La instruccion "using" nos permite utilizar la version corta de cada nombre del
+* programa de la biblioteca estandar de C++ o de cualquier espacio de nombres
 * especificado por el programador, por ejemplo cout en vez de std::cout.
 * Cada "namespace" define un alcance en donde se colocan los indentificadores y
 * variables globales.
@@ -155,7 +155,7 @@ protected:
 * Preconditions:   Commands are in the form of a capital letter,
 *                  followed by any parameters needed, ending with
 *                  a carriage return and line feed.
-* Postconditions:  Responses are in the form of a lowercase letter 
+* Postconditions:  Responses are in the form of a lowercase letter
 *                  corresponding to the capital letter command, then
 *                  any data it needs to transmit and a carriage return.
 **************************************************************************************/
@@ -171,7 +171,7 @@ public:
 * Preconditions:  newPortName is valid serial port if given
 * Postconditions: verbose set to false unless true is passed as second parameter
 *                 (can be changed later with the verboseOn() method)
-*                 serial port set to parameter, if none given port set 
+*                 serial port set to parameter, if none given port set
 *                 to "/dev/ttya"; Connection to robot opened.
 * To create a kRobot in verbose mode so that initial communication can be seen,
 * kRobot r("/dev/ttyS0", true);
@@ -185,6 +185,7 @@ kRobot(apstring newPortName = "/dev/ttyS0", bool verboseStatus = false);
 * Postconditions: Connection closed and serial port deleted.
 **************************************************************************************/
 ~kRobot();
+int cerrar();
 
 /**************************************************************************************
 * Purpose:        Resets the wheel counters to zero. Sets speed and acceleration
@@ -250,7 +251,7 @@ bool stop();
 
 /**************************************************************************************
 * Purpose:        Makes robot turn left degrees passed as parameter.
-* Preconditions:  0<=degrees<=360; Serial communications open. 
+* Preconditions:  0<=degrees<=360; Serial communications open.
 * Postconditions: Robot turns right n degrees. Returns true if
 *                 completed sucessfully, false otherwise.
 **************************************************************************************/
@@ -258,7 +259,7 @@ bool turnLeft(int degree);
 
 /**************************************************************************************
 * Purpose:        Makes robot turn right degrees passed as parameter.
-* Preconditions:  0<=degrees<=360; Serial communications open. 
+* Preconditions:  0<=degrees<=360; Serial communications open.
 * Postconditions: Robot turns right n degrees. Returns true if
 *                 completed sucessfully, false otherwise.
 **************************************************************************************/
@@ -298,7 +299,7 @@ int getRightWheelSpeed();
 
 /**************************************************************************************
 * Purpose:        Sets the speed and direction (+/-) of wheel/motor in mm/sec.
-*                 Range is 0 < speed <= 1000 mm/sec. 
+*                 Range is 0 < speed <= 1000 mm/sec.
 * Preconditions:  Serial communications open.
 * Postconditions: Private fields are updated. Returns true if
 *                 completed sucessfully, false otherwise.
@@ -321,7 +322,7 @@ int getRightWheelAcceleration();
 
 /**************************************************************************************
 * Purpose:        Sets the acceleration and direction (+/-) of wheel/motor in mm/sec^2.
-*                 Range is 0 < acceleration <= 396875 mm/sec^2. 
+*                 Range is 0 < acceleration <= 396875 mm/sec^2.
 * Preconditions:  Serial communications open.
 * Postconditions: Private fields are updated. Returns true if
 *                 completed sucessfully, false otherwise.
@@ -344,7 +345,7 @@ bool readLightSensors();
 /**************************************************************************************
 * Purpose:        Displays the values of each of eight light sensors.
 * Preconditions:  Sensors updated; serial communication open.
-* Postconditions: Values of light sensors displayed, indexed 
+* Postconditions: Values of light sensors displayed, indexed
 *                 0..7 as labeled on Khepera diagram. Returns true if
 *                 completed sucessfully, false otherwise.
 **************************************************************************************/
@@ -360,8 +361,8 @@ int getLightSensor(int s);
 
 /**************************************************************************************
 * Purpose:        Reads the values of each of eight proximity sensors.
-* Preconditions:  Serial communication open. 
-* Postconditions: Stores values of proximity sensors in an array, indexed 
+* Preconditions:  Serial communication open.
+* Postconditions: Stores values of proximity sensors in an array, indexed
 *                 0..7 as labeled on Khepera diagram. Returns true if
 *                 completed sucessfully, false otherwise.
 **************************************************************************************/
@@ -370,7 +371,7 @@ bool readProxSensors();
 /**************************************************************************************
 * Purpose:        Displays the values of the proximity sensors to the screen.
 * Preconditions:  Array contains values.
-* Postconditions: Values of proximity sensors displayed, indexed 
+* Postconditions: Values of proximity sensors displayed, indexed
 *                 0..7 as labeled on Khepera diagram. Returns true if
 *                 completed sucessfully, false otherwise.
 **************************************************************************************/
@@ -390,7 +391,7 @@ int getProxSensor(int s);
 
 /**************************************************************************************
 * Purpose:        Display all of the debugging messages on the screen.By default
-*                 kRobot verbose and Serial VERBOSE set to true. 
+*                 kRobot verbose and Serial VERBOSE set to true.
 * Preconditions:  *SerialPort created by OpenConnection()
 * Postconditions: Serial.VERBOSE and kRobot.verbose set to true. Returns true if
 *                 completed sucessfully, false otherwise.
@@ -479,7 +480,7 @@ bool wait(double time);
 
 /**************************************************************************************
 * Purpose:        Converts the integer num passed into an apstring and returns it.
-*                 Used to create a command string where integer values are passed 
+*                 Used to create a command string where integer values are passed
 * Preconditions:  num is an integer
 * Postconditions: returns string representation of integer
 **************************************************************************************/

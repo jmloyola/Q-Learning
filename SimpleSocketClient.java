@@ -29,27 +29,35 @@ public class SimpleSocketClient
   
   public SimpleSocketClient()
   {
-    String testServerName = "localhost";
-    int port = 8000;
-    try
-    {
-      // open a socket
-      Socket socket = openSocket(testServerName, port);
+    String nombre = null;          
+    do{
+      nombre = new String("");
+      String testServerName = "localhost";
+      int port = 6800;
+      try
+      {
+        // open a socket
+        Socket socket = openSocket(testServerName, port);
+          BufferedReader lectura = new BufferedReader(new InputStreamReader(System.in));
+          System.out.println("Ingrese accion: ");
+          nombre = lectura.readLine();
+          // write-to, and read-from the socket.
+          // in this case just write a simple command to a web server.
+          System.out.println("NOMBRE :::: "+nombre);
 
-      // write-to, and read-from the socket.
-      // in this case just write a simple command to a web server.
-      String result = writeToAndReadFromSocket(socket, "24");
-      
-      // print out the result we got back from the server
-      System.out.println(result);
-
-      // close the socket, and we're done
-      socket.close();
-    }
-    catch (Exception e)
-    {
-      e.printStackTrace();
-    }
+          String result = writeToAndReadFromSocket(socket, nombre);
+          
+          // print out the result we got back from the server
+          System.out.println(result);
+        
+        // close the socket, and we're done
+        socket.close();
+      }
+      catch (Exception e)
+      {
+        e.printStackTrace();
+      }
+    }while(!nombre.equals("Parar"));
   }
   
   private String writeToAndReadFromSocket(Socket socket, String writeTo) throws Exception
@@ -58,6 +66,7 @@ public class SimpleSocketClient
     {
       // write text to the socket
       BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+      bufferedWriter.flush();
       bufferedWriter.write(writeTo);
       bufferedWriter.flush();
       
