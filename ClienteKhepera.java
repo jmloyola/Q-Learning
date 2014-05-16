@@ -41,7 +41,7 @@ public class ClienteKhepera
     static final int ACCION_IZQ_20_DER_15 = 14;
     static final int ACCION_IZQ_20_DER_20 = 15;
     // No es una de las acciones que realiza khepera
-    static final int ACCION_LEER_SENSORES = 16;   
+    static final int ACCION_LEER_SENSORES = 24;   
     //Valor de sensor considerado como posible choque
     static final int VALOR_CHOQUE = 400;
             
@@ -49,8 +49,6 @@ public class ClienteKhepera
     int iteracion = 1;
     double epsilon = 0.9;
 
-    Socket socket;
-    
     
   // call our constructor to start the program
   public static void main(String[] args)
@@ -58,54 +56,78 @@ public class ClienteKhepera
     new ClienteKhepera();
   }
   
-      public void ejecutar() {
+      public void ejecutar( ) {
             
-            double q_actual;
-            double q_max;
-            double q_nuevo;
-            //Posicion de estado en la tabla Q
-            int pos_estado;
-            int nuevo_pos_estado;
-            int accion;
-            double recompensa;
-            
-            inicializarValoresQ(0.0);
 
-            while( iteracion != NUMERO_EPISODIOS ) {
-                //Recuperar estado desde robot
-                pos_estado = getEstado();
-                
-                accion = seleccionarAccion( pos_estado );
-                
-                
-                //Ejecuta accion 
-                ejecutarAccion( accion );
-                
-                //Nuevo estado luego de ejecutar la accion
-                nuevo_pos_estado =  this.getEstado();
-                
-                //Calcula la recompensa para el nuevo par estado-accion
-                recompensa = getRecompensa(pos_estado, nuevo_pos_estado);
+            String testServerName = "localhost";
+            int port = 6800;
+            Socket socket  = null;
+            try
+            {
+              // open a socket
+              
 
-                
-                q_actual = tabla_q[pos_estado][accion];
-                
-                q_max = getMaxQ(nuevo_pos_estado);
+              double q_actual;
+                    double q_max;
+                    double q_nuevo;
+                    //Posicion de estado en la tabla Q
+                    int pos_estado;
+                    int nuevo_pos_estado;
+                    int accion;
+                    double recompensa;
+                    
+                    inicializarValoresQ(0.0);
 
-                // Calculate new Value for Q
-                q_nuevo = q_actual + BETA * ( recompensa + GAMMA * q_max - q_actual );
-                
-                tabla_q[pos_estado][accion] = q_nuevo;
+                    while( iteracion != NUMERO_EPISODIOS ) {
+                        socket = openSocket(testServerName, port);
 
-                // Set state to the new state.
-                //pos_estado = nuevo_pos_estado;
-                
-                iteracion++;
-                if (iteracion > 2000){
-                    epsilon = 0.2;
+                        //Recuperar estado desde robot
+                        pos_estado = this.getEstado(socket);
+                        
+                        accion = seleccionarAccion( pos_estado );
+                        
+                        socket = openSocket(testServerName, port);
+                        //Ejecuta accion 
+                        ejecutarAccion( accion, socket);
+
+                        socket = openSocket(testServerName, port);
+                        
+                        //Nuevo estado luego de ejecutar la accion
+                        nuevo_pos_estado =  this.getEstado(socket);
+                        
+                        //Calcula la recompensa para el nuevo par estado-accion
+                        recompensa = getRecompensa(pos_estado, nuevo_pos_estado);
+
+                        
+                        q_actual = tabla_q[pos_estado][accion];
+                        
+                        q_max = getMaxQ(nuevo_pos_estado);
+
+                        // Calculate new Value for Q
+                        q_nuevo = q_actual + BETA * ( recompensa + GAMMA * q_max - q_actual );
+                        
+                        tabla_q[pos_estado][accion] = q_nuevo;
+
+                        // Set state to the new state.
+                        //pos_estado = nuevo_pos_estado;
+                        
+                        iteracion++;
+                        if (iteracion > 2000){
+                            epsilon = 0.2;
+                        }
                 }
-        }
-    } 
+              
+              // close the socket, and we're done
+              socket.close();
+            }
+            catch (Exception e)
+            {
+              e.printStackTrace();
+            }
+
+
+            
+    } // end ejecutar 
         
         
     //Inicializar la matriz de valores Q
@@ -119,76 +141,76 @@ public class ClienteKhepera
     
     //Ejecutar accion en el servidor
      //OJO Esto puede cambiarse dejando dos parametros indicando las velocidades de las ruedas y sacando el switch
-    public String ejecutarAccion(int accion){
+    public String ejecutarAccion(int accion, Socket socket){
         String respuesta = "NO MIRAR!!";
         try{
             switch (accion){
                 case ACCION_IZQ_M15_DER_M15:{
-                    writeToAndReadFromSocket(socket, "2,-15,-15");
+                    writeToAndReadFromSocket(socket, "2,-15,-15"+"\0");
                     break;
                 }
                 case ACCION_IZQ_M15_DER_10:{
-                    writeToAndReadFromSocket(socket, "2,-15,10");
+                    writeToAndReadFromSocket(socket, "2,-15,10"+"\0");
                     break;
                 }
                 case ACCION_IZQ_M15_DER_15:{
-                    writeToAndReadFromSocket(socket, "2,-15,15");
+                    writeToAndReadFromSocket(socket, "2,-15,15"+"\0");
                     break;
                 }
                 case ACCION_IZQ_M15_DER_20:{
-                    writeToAndReadFromSocket(socket, "2,-15,20");
+                    writeToAndReadFromSocket(socket, "2,-15,20"+"\0");
                     break;
                 }
                 case ACCION_IZQ_10_DER_M15:{
-                    writeToAndReadFromSocket(socket, "2,10,-15");
+                    writeToAndReadFromSocket(socket, "2,10,-15"+"\0");
                     break;
                 }
                 case ACCION_IZQ_10_DER_10:{
-                    writeToAndReadFromSocket(socket, "2,10,10");
+                    writeToAndReadFromSocket(socket, "2,10,10"+"\0");
                     break;
                 }
                 case ACCION_IZQ_10_DER_15:{
-                    writeToAndReadFromSocket(socket, "2,10,15");
+                    writeToAndReadFromSocket(socket, "2,10,15"+"\0");
                     break;
                 }
                 case ACCION_IZQ_10_DER_20:{
-                    writeToAndReadFromSocket(socket, "2,10,20");
+                    writeToAndReadFromSocket(socket, "2,10,20"+"\0");
                     break;
                 }
                 case ACCION_IZQ_15_DER_M15:{
-                    writeToAndReadFromSocket(socket, "2,15,-15");
+                    writeToAndReadFromSocket(socket, "2,15,-15"+"\0");
                     break;
                 }
                 case ACCION_IZQ_15_DER_10:{
-                    writeToAndReadFromSocket(socket, "2,15,10");
+                    writeToAndReadFromSocket(socket, "2,15,10"+"\0");
                     break;
                 }
                 case ACCION_IZQ_15_DER_15:{
-                    writeToAndReadFromSocket(socket, "2,15,15");
+                    writeToAndReadFromSocket(socket, "2,15,15"+"\0");
                     break;
                 }
                 case ACCION_IZQ_15_DER_20:{
-                    writeToAndReadFromSocket(socket, "2,15,20");
+                    writeToAndReadFromSocket(socket, "2,15,20"+"\0");
                     break;
                 }
                 case ACCION_IZQ_20_DER_M15:{
-                    writeToAndReadFromSocket(socket, "2,20,-15");
+                    writeToAndReadFromSocket(socket, "2,20,-15"+"\0");
                     break;
                 }
                 case ACCION_IZQ_20_DER_10:{
-                    writeToAndReadFromSocket(socket, "2,20,10");
+                    writeToAndReadFromSocket(socket, "2,20,10"+"\0");
                     break;
                 }
                 case ACCION_IZQ_20_DER_15:{
-                    writeToAndReadFromSocket(socket, "2,20,15");
+                    writeToAndReadFromSocket(socket, "2,20,15"+"\0");
                     break;
                 }
                 case ACCION_IZQ_20_DER_20:{
-                    writeToAndReadFromSocket(socket, "2,20,20");
+                    writeToAndReadFromSocket(socket, "2,20,20"+"\0");
                     break;
                 }
                 case ACCION_LEER_SENSORES:{
-                    respuesta = writeToAndReadFromSocket(socket, "24");
+                    respuesta = writeToAndReadFromSocket(socket, "24"+"\0");
                     break;
                 }
                 default:{
@@ -203,18 +225,19 @@ public class ClienteKhepera
      
      
     //Recupera la posicion de estado actual
-    public int getEstado(){
+    public int getEstado(Socket socket){
         String valorSensores;
         String[] arr;
         int[] arr_int = new int[8];
         int pos_estado =0;
         
         //Consultar valor de sensores y control de falta de respuesta
-        valorSensores = this.ejecutarAccion(ACCION_LEER_SENSORES);
-        
+        valorSensores = this.ejecutarAccion(ACCION_LEER_SENSORES, socket);
+         System.out.println("Valores Sensores es:: "+valorSensores);
         arr = valorSensores.split(";");
         
         for(int j=0; j<8; j++){
+            System.out.println("Arr en "+j+"ES::"+ arr[j]);
             arr_int[j]= Integer.parseInt(arr[j]);
             if(arr_int[j] > VALOR_CHOQUE){
                 arr_int[j]=1;
@@ -283,22 +306,11 @@ public class ClienteKhepera
   
   public ClienteKhepera()
   {
-    String testServerName = "localhost";
-    int port = 8000;
-    try
-    {
-      // open a socket
-      socket = openSocket(testServerName, port);
 
-      ejecutar();
-      
-      // close the socket, and we're done
-      socket.close();
-    }
-    catch (Exception e)
-    {
-      e.printStackTrace();
-    }
+    ejecutar();
+
+
+    
   }
   
   private String writeToAndReadFromSocket(Socket socket, String writeTo) throws Exception
@@ -316,7 +328,8 @@ public class ClienteKhepera
       String str;
       while ((str = bufferedReader.readLine()) != null)
       {
-        sb.append(str + "\n");
+        System.out.println("STR::"+ str);
+        sb.append(str);
       }
       
       // close the reader, and return the results as a String
