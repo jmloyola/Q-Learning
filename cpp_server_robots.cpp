@@ -16,7 +16,7 @@
 //set serial port for linux
 
 
-int send_to_khepera(kRobot r, char *command){
+int send_to_khepera(kRobot *r, char *command){
   int len=strlen(command),i=2,acum=0,j,leftSpeed,rightSpeed,ret;
   char tmp[15];
 
@@ -37,7 +37,7 @@ int send_to_khepera(kRobot r, char *command){
      * Postconditions: Counters set to 0; Speed and acceleration are se to default.
      *                 Returns true if completed sucessfully, false otherwise.
      **************************************************************************************/
-    if(r.reset()) ret=1;
+    if(r->reset()) ret=1;
     else ret=0;
 
     break;
@@ -59,8 +59,8 @@ int send_to_khepera(kRobot r, char *command){
     for(j=0;command[i]!='\0';j++,i++) tmp[j]=command[i];
     tmp[j]='\0';
     rightSpeed=atoi(tmp);
-    r.setWheelSpeed(leftSpeed, rightSpeed);
-    if(r.moveForward()) ret=1;
+    r->setWheelSpeed(leftSpeed, rightSpeed);
+    if(r->moveForward()) ret=1;
     else ret=0;
 
     break;
@@ -79,7 +79,7 @@ int send_to_khepera(kRobot r, char *command){
     for(j=0;command[i]!='\0';j++,i++) tmp[j]=command[i];
     tmp[j]='\0';
     leftSpeed=atoi(tmp);//Uso leftSpeed para guardar la distancia
-    if(r.moveForwardDistance(leftSpeed)) ret=1;
+    if(r->moveForwardDistance(leftSpeed)) ret=1;
     else ret=0;
 
     break;
@@ -101,8 +101,8 @@ int send_to_khepera(kRobot r, char *command){
     for(j=0;command[i]!='\0';j++,i++) tmp[j]=command[i];
     tmp[j]='\0';
     rightSpeed=atoi(tmp);
-    r.setWheelSpeed(leftSpeed, rightSpeed);
-    if(r.moveBackward()) ret=1;
+    r->setWheelSpeed(leftSpeed, rightSpeed);
+    if(r->moveBackward()) ret=1;
     else ret=0;
 
     break;
@@ -121,7 +121,7 @@ int send_to_khepera(kRobot r, char *command){
     for(j=0;command[i]!='\0';j++,i++) tmp[j]=command[i];
     tmp[j]='\0';
     leftSpeed=atoi(tmp);//Uso leftSpeed para guardar la distancia
-    if(r.moveBackwardDistance(leftSpeed)) ret=1;
+    if(r->moveBackwardDistance(leftSpeed)) ret=1;
     else ret=0;
 
     break;
@@ -134,7 +134,7 @@ int send_to_khepera(kRobot r, char *command){
      * Postconditions: Robot stops. Returns true if completed sucessfully, false otherwise.
      **************************************************************************************/
 
-    if(r.stop()) ret=1;
+    if(r->stop()) ret=1;
     else ret=0;
 
     break;
@@ -142,7 +142,7 @@ int send_to_khepera(kRobot r, char *command){
   case 7: {
     /**************************************************************************************
      * bool turnLeft(int degree);
-     * Purpose:        Makes robot turn left degrees passed as parameter.
+     * Purpose:        Makes robot turn left degrees passed as parameter->
      * Preconditions:  0<=degrees<=360; Serial communications open.
      * Postconditions: Robot turns right n degrees. Returns true if
      *                 completed sucessfully, false otherwise.
@@ -152,7 +152,7 @@ int send_to_khepera(kRobot r, char *command){
     for(j=0;command[i]!='\0';j++,i++) tmp[j]=command[i];
     tmp[j]='\0';
     leftSpeed=atoi(tmp);//Uso leftSpeed para guardar los grados
-    if(r.turnLeft(leftSpeed)) ret=1;
+    if(r->turnLeft(leftSpeed)) ret=1;
     else ret=0;
     wait(0.2);
 
@@ -161,7 +161,7 @@ int send_to_khepera(kRobot r, char *command){
   case 8: {
     /**************************************************************************************
      * bool turnRight(int degree);
-     * Purpose:        Makes robot turn right degrees passed as parameter.
+     * Purpose:        Makes robot turn right degrees passed as parameter->
      * Preconditions:  0<=degrees<=360; Serial communications open.
      * Postconditions: Robot turns right n degrees. Returns true if
      *                 completed sucessfully, false otherwise.
@@ -171,7 +171,7 @@ int send_to_khepera(kRobot r, char *command){
     for(j=0;command[i]!='\0';j++,i++) tmp[j]=command[i];
     tmp[j]='\0';
     leftSpeed=atoi(tmp);//Uso leftSpeed para guardar los grados
-    if(r.turnRight(leftSpeed)) ret=1;
+    if(r->turnRight(leftSpeed)) ret=1;
     else ret=0;
     wait(0.2);
 
@@ -180,24 +180,24 @@ int send_to_khepera(kRobot r, char *command){
   case 9: {
     /**************************************************************************************
      * int getLeftWheelCounter();
-     * Purpose:        Reads left wheel counter.
+     * Purpose:        Reads left wheel counter->
      * Preconditions:  Serial communications open.
      * Postconditions: Returns counter (+ forward, - reverse)
      **************************************************************************************/
 
-    ret=r.getLeftWheelCounter();
+    ret=r->getLeftWheelCounter();
 
     break;
   }
   case 10: {
     /**************************************************************************************
      * int getRightWheelCounter();
-     * Purpose:        Reads right wheel counter.
+     * Purpose:        Reads right wheel counter->
      * Preconditions:  Serial communications open.
      * Postconditions: Returns counter (+ forward, - reverse)
      **************************************************************************************/
 
-    ret=r.getRightWheelCounter();
+    ret=r->getRightWheelCounter();
 
     break;
   }
@@ -209,7 +209,7 @@ int send_to_khepera(kRobot r, char *command){
      * Postconditions: Returns speed and direction of left wheel
      **************************************************************************************/
 
-    ret=r.getLeftWheelSpeed();
+    ret=r->getLeftWheelSpeed();
 
     break;
   }
@@ -221,7 +221,7 @@ int send_to_khepera(kRobot r, char *command){
      * Postconditions: Returns speed and direction of right wheel
      **************************************************************************************/
 
-    ret=r.getRightWheelSpeed();
+    ret=r->getRightWheelSpeed();
 
     break;
   }
@@ -243,7 +243,7 @@ int send_to_khepera(kRobot r, char *command){
     for(j=0;command[i]!='\0';j++,i++) tmp[j]=command[i];
     tmp[j]='\0';
     rightSpeed=atoi(tmp);
-    if(r.setWheelSpeed(leftSpeed, rightSpeed)) ret=1;
+    if(r->setWheelSpeed(leftSpeed, rightSpeed)) ret=1;
     else ret=0;
 
     break;
@@ -256,7 +256,7 @@ int send_to_khepera(kRobot r, char *command){
      * Postconditions: Returns acceleration of left wheel
      **************************************************************************************/
 
-    ret=r.getLeftWheelAcceleration();
+    ret=r->getLeftWheelAcceleration();
 
     break;
   }
@@ -268,7 +268,7 @@ int send_to_khepera(kRobot r, char *command){
      * Postconditions: Returns acceleration of right wheel
      **************************************************************************************/
 
-    ret=r.getRightWheelAcceleration();
+    ret=r->getRightWheelAcceleration();
 
     break;
   }
@@ -290,55 +290,8 @@ int send_to_khepera(kRobot r, char *command){
     for(j=0;command[i]!='\0';j++,i++) tmp[j]=command[i];
     tmp[j]='\0';
     rightSpeed=atoi(tmp);//Uso rightSpeed para guardar la aceleración derecha
-    if(r.setWheelAcceleration(leftSpeed, rightSpeed)) ret=1;
+    if(r->setWheelAcceleration(leftSpeed, rightSpeed)) ret=1;
     else ret=0;
-
-    break;
-  }
-  case 17: {
-    /**************************************************************************************
-     * bool readLightSensors();
-     * Purpose:        Reads the values of each of eight light sensors.
-     * Preconditions:  Serial communication open.
-     * Postconditions: Stores values of light sensors in an array, indexed
-     *                 0..7, as labeled on Khepera diagram. Returns true if
-     *                 completed sucessfully, false otherwise.
-     **************************************************************************************/
-
-    if(r.readLightSensors()) ret=1;
-    else ret=0;
-
-    break;
-  }
-  case 18: {
-    /**************************************************************************************
-     * bool writeLightSensors();
-     * Purpose:        Displays the values of each of eight light sensors.
-     * Preconditions:  Sensors updated; serial communication open.
-     * Postconditions: Values of light sensors displayed, indexed
-     *                 0..7 as labeled on Khepera diagram. Returns true if
-     *                 completed sucessfully, false otherwise.
-     **************************************************************************************/
-
-    if(r.writeLightSensors()) ret=1;
-    else ret=0;
-
-    break;
-  }
-  case 19: {
-    /**************************************************************************************
-     * int getLightSensor(int s);
-     * Purpose:        Displays the value of requested sensor as numbered
-     *                on Khepera diagram.
-     * Preconditions:  0<=s<8; Sensors updated; serial communication open.
-     * Postconditions: Value returned, 0<=val<1024, larger magnitidue is less light
-     **************************************************************************************/
-
-    i++;//Apunto al parámetro
-    for(j=0;command[i]!='\0';j++,i++) tmp[j]=command[i];
-    tmp[j]='\0';
-    leftSpeed=atoi(tmp);//Uso leftSpeed para guardar el número de sensor
-    ret=r.getLightSensor(leftSpeed);
 
     break;
   }
@@ -352,22 +305,7 @@ int send_to_khepera(kRobot r, char *command){
      *                 completed sucessfully, false otherwise.
      **************************************************************************************/
 
-    if(r.readProxSensors()) ret=1;
-    else ret=0;
-
-    break;
-  }
-  case 21: {
-    /**************************************************************************************
-     * bool writeProxSensors();
-     * Purpose:        Displays the values of the proximity sensors to the screen.
-     * Preconditions:  Array contains values.
-     * Postconditions: Values of proximity sensors displayed, indexed
-     *                 0..7 as labeled on Khepera diagram. Returns true if
-     *                 completed sucessfully, false otherwise.
-     **************************************************************************************/
-
-    if(r.writeProxSensors()) ret=1;
+    if(r->readProxSensors()) ret=1;
     else ret=0;
 
     break;
@@ -378,119 +316,18 @@ int send_to_khepera(kRobot r, char *command){
      * Purpose:        Displays the value of requested sensor as numbered
      *                 on Khepera diagram.
      * Preconditions:  0<=s<8; Sensors updated; serial communication open.
-     * Postconditions: Value returned, 0<=val<1024, larger magnitidue is closer.
+     * Postconditions: Value returned, 0<=val<1024, larger magnitidue is closer->
      **************************************************************************************/
 
     i++;//Apunto al parámetro
     for(j=0;command[i]!='\0';j++,i++) tmp[j]=command[i];
     tmp[j]='\0';
     leftSpeed=atoi(tmp);//Uso leftSpeed para guardar el número de sensor
-    ret=r.getProxSensor(leftSpeed);
-
-    printf("devolviendo %d\n", ret);
-    break;
-  }
-  case 23: {//Caso en que se piden todos los valores de los sensores de luz - Nunca entra por acá
-
-  break;
-  }
-  case 24: {//Caso en que se piden todos los valores de los sensores de proximidad - Nunca entra por acá
-
-    break;
-  }
-  case 25: {
-
-ret=1;
-    break;
-}
-  case 26: {
-ret=1;
-
-    break;
-  }
-  case 27: {
-
- ret=1;
-    break;
-  }
-  case 28: {
- ret=1;
-
-    break;
-  }
-  case 29: {
-  ret=1;
-
-    break;
-  }
-  case 30: {
-
- ret=1;
-  break;
-  }
-  case 31: {
-
- ret=1;
+    ret = r->getProxSensor(leftSpeed);
     break;
   }
 
-  case 32:{
-
-
-    ret=1;
-
-    break;
-  }
-  case 33:{
-    ret=1;
-
-    break;
-  }
-  case 34:{
-
-ret=1;
-    break;
-  }
-  case 35:{
-
-    ret=1;
-    break;
-  }
-  case 36:{
-
-
-    ret=1;
-
-    break;
-
-  }
-  case 37:{
-
-
-    ret=1;
-
-    break;
-  }
-  case 38:{
-
-
-ret=1;
-
-    break;
-  }
-  case 39:{
-
-
-ret=1;
-
-    break;
-  }
-  case 40:{
-   ret=1;
-
-    break;
-  }
-
+  default: ret = 1;
 }
 
 return ret;
@@ -551,119 +388,46 @@ int main()
   printf("SERVIDOR: ERROR AL TRATAR DE RECUPERAR EL PEDIDO DE CONEXION DE LA COLA...\n");
   return 2;
       }
+
+
     /*Inicializa buffer*/
     int y;
-    for(y=0;y<300;y++){
-        buffer[y]='\0';
-    }
+    // for(y=0;y<300;y++){
+    //     buffer[y]='\0';
+    // }
     buffer[0]='\0';
 
     /*Recibe el mensaje del nuevo socket creado con la llamada al sistema accept*/
     recv(nuevo_socket, buffer, 100, 0);
 
-    printf("SERVER: recibo en buffer %s\n",buffer);
+//    printf("SERVER: recibo en buffer %s\n",buffer);
 
     /*Manda el comando al khepera y recibe la respuesta*/
-
-    if(!strcmp(buffer,"23")){
-      //Caso en que se piden todos los valores de los sensores de luz
-      answer=send_to_khepera(r, "17");
-      buffer[0]='\0';
-      for(i=0;i<8;i++){
-  switch(i){
-  case 0: {
-    answer=send_to_khepera(r, "19,0");
-    num[0]='\0';
-    sprintf(num,"%d,",answer);
-    strcat(buffer,num);
-    break;
-  }
-  case 1: {
-    answer=send_to_khepera(r, "19,1");
-    num[0]='\0';
-    sprintf(num,"%d,",answer);
-    strcat(buffer,num);
-    break;
-  }
-  case 2: {
-    answer=send_to_khepera(r, "19,2");
-    num[0]='\0';
-    sprintf(num,"%d,",answer);
-    strcat(buffer,num);
-    break;
-  }
-  case 3: {
-    answer=send_to_khepera(r, "19,3");
-    num[0]='\0';
-    sprintf(num,"%d,",answer);
-    strcat(buffer,num);
-    break;
-  }
-  case 4: {
-    answer=send_to_khepera(r, "19,4");
-    num[0]='\0';
-    sprintf(num,"%d,",answer);
-    strcat(buffer,num);
-    break;
-  }
-  case 5: {
-    answer=send_to_khepera(r, "19,5");
-    num[0]='\0';
-    sprintf(num,"%d,",answer);
-    strcat(buffer,num);
-    break;
-  }
-  case 6: {
-    answer=send_to_khepera(r, "19,6");
-    num[0]='\0';
-    sprintf(num,"%d,",answer);
-    strcat(buffer,num);
-    break;
-  }
-  case 7: {
-    answer=send_to_khepera(r, "19,7");
-    num[0]='\0';
-    sprintf(num,"%d",answer);
-    strcat(buffer,num);
-    break;
-  }
-  }
-      }
-    }
-    else if(!strcmp(buffer,"24")){
-      //Caso en que se piden todos los valores de los sensores de proximidad
-      answer=send_to_khepera(r, "20");
-      buffer[0]='\0';
-      char parametro[5] = "22,";
-      char stri[1];
-      for(i=0;i<8;i++){
-        printf("sensor %d\n", i);
-        sprintf(stri,"%d,",i);
-        printf("PARAMETRO: %s\n", stri);
-        answer=send_to_khepera(r, strcat(parametro, stri));
+     if(!strcmp(buffer,"24")){
+        answer=send_to_khepera(&r, "20");
+        buffer[0]='\0';
+        char parametro[5];
+        char stri[1];
+        for(i=0;i<8;i++){
+            sprintf(stri,"%d",i);
+            strcpy(parametro, "22,");
+            strcat(parametro, stri);
+            answer=send_to_khepera(&r, parametro);
+            num[0]='\0';
+            sprintf(num,"%d",answer);
+            strcat(buffer,num);
+            strcat(buffer,";");
+           printf("answer: %d  ----------   %s\n", answer, buffer);
+        }
+    }else{
+        answer=send_to_khepera(&r, buffer);
+        /*Inicializa buffer*/
+        buffer[0]='\0';
         num[0]='\0';
-        sprintf(num,"%d,",answer);
+        sprintf(num,"%d",answer);
         strcat(buffer,num);
-        strcat(buffer,";");
-      }
     }
-    else if(!strcmp(buffer,"32")){
-
-    }
-else if(!strcmp(buffer,"34")){
-
-  }
-    else if(!strcmp(buffer,"36")){
-  }
-    else{
-      answer=send_to_khepera(r, buffer);
-      /*Inicializa buffer*/
-      buffer[0]='\0';
-      num[0]='\0';
-      sprintf(num,"%d",answer);
-      strcat(buffer,num);
-    }
-
+    //r.cerrar();
     send(nuevo_socket, buffer, strlen(buffer)+1, 0);
     close(nuevo_socket);
 

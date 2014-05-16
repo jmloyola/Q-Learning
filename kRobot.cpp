@@ -798,6 +798,7 @@ bool kRobot::readProxSensors()
 
   for(int i=0; i<8; i++) {
     comma = reply.find(',');
+
     ProxSensors[i] = atoi(reply.substr(0,comma+1).c_str());
     reply = reply.substr(comma+1, reply.length() - comma + 1);
   }
@@ -833,6 +834,7 @@ int kRobot::getProxSensor(int s)
 {
   return ProxSensors[s];
 }//end getProxSensor(int)
+
 
 /********************************************************************************/
 
