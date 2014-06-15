@@ -59,7 +59,7 @@ int send_to_khepera(kRobot *r, char *command){
     for(j=0;command[i]!='\0';j++,i++) tmp[j]=command[i];
     tmp[j]='\0';
     rightSpeed=atoi(tmp);
-    r->setWheelSpeed(leftSpeed, rightSpeed);
+    r->setWheelSpeed(leftSpeed*2, rightSpeed*2);
     if(r->moveForward()) ret=1;
     else ret=0;
 
@@ -417,7 +417,7 @@ int main()
             sprintf(num,"%d",answer);
             strcat(buffer,num);
             strcat(buffer,";");
-           printf("answer: %d  ----------   %s\n", answer, buffer);
+           
         }
     }else{
         answer=send_to_khepera(&r, buffer);
