@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 import static java.lang.Thread.sleep;
 
 
-public class ClienteKhepera
+public class ClienteKhepera 
 {
     //Factor de aprendizaje
     public static final double BETA = 0.9;
@@ -55,6 +55,7 @@ public class ClienteKhepera
     double[][] tabla_q = new double [CANT_ESTADOS][CANT_ACCIONES];
     int iteracion = 1;
     double epsilon = 0.9;
+    int sum_sensor_Front = 0, sum_sensor_Back = 0;
     int auxiliar = 0, auxiliar2 = 0;
 
     
@@ -110,13 +111,6 @@ public class ClienteKhepera
                         //Calcula la recompensa para el nuevo par estado-accion
                         recompensa = getRecompensa();
 
-                        if (recompensa == -1){
-                            System.out.println("Recompesa NEGATIVA!!!!!!");
-                        }
-                        else{
-                            System.out.println("Recompesa......"+recompensa+".........");
-                        }
-                        
                         q_actual = tabla_q[pos_estado][accion];
                         
                         q_max = getMaxQ(nuevo_pos_estado);
@@ -256,11 +250,11 @@ public class ClienteKhepera
         
         //Consultar valor de sensores y control de falta de respuesta
         valorSensores = this.ejecutarAccion(ACCION_LEER_SENSORES, socket);
-         System.out.println("Valores Sensores es:: "+valorSensores);
+        //System.out.println("Valores Sensores es:: "+valorSensores);
         arr = valorSensores.split(";");
         
         for(int j=0; j<8; j++){
-            System.out.println("Arr en "+j+" ES::    "+ arr[j]);
+            //System.out.println("Arr en "+j+" ES::    "+ arr[j]);
             arr_int[j]= Integer.parseInt(arr[j]);
             auxiliar2 += arr_int[j];
             if(arr_int[j] > VALOR_CHOQUE){
@@ -270,6 +264,10 @@ public class ClienteKhepera
                 arr_int[j]=0;
             }
         }
+        sum_sensor_Front = arr_int[0] +arr_int[1] +arr_int[2] +arr_int[3] +arr_int[4] +arr_int[5];
+        
+        sum_sensor_Back = arr_int[6] +arr_int[7];
+        
         //Calcula la posicion de estado en base al valor de los sensores discretizados
         for(int i=0; i<8;i++){
             pos_estado += arr_int[i]*(Math.pow(2.0, i)); 
@@ -291,80 +289,35 @@ public class ClienteKhepera
                 pos_accion = i;
             }
         }
+        int cant_exploracion;
         
         //Explore
         if ( Math.random() < epsilon ) {
-            /*
-            if(Math.random() < 0.5){
-                pos_accion = (pos_accion + 6 )% CANT_ACCIONES;
-            }
-            else{
-                pos_accion = (pos_accion + 10 )% CANT_ACCIONES;
-            } 
-            */
-            pos_accion = (pos_accion + (int)(Math.random() * 15))  %   CANT_ACCIONES;           
+            cant_exploracion =  ((CANT_ACCIONES -1 )/ 2) - (int)((0.9 - epsilon)  *  ((CANT_ACCIONES -1 )/ 2));
+            System.out.println("Cantidad de exploracion"+cant_exploracion);
+            pos_accion = (pos_accion + cant_exploracion) %  CANT_ACCIONES;//(int)(Math.random() * CANT_ACCIONES))  %   CANT_ACCIONES;           
         }
-
         return pos_accion;
     }
     
     public double getRecompensa(){
-
         System.out.println("auxiliar 1 : "+ auxiliar + "-----auxiliar2  "+ auxiliar2);
-
-        if(auxiliar  > auxiliar2 + 500){
+        if(auxiliar - auxiliar2 > 200){
+            System.out.println("Recompensa positiva");
             auxiliar = auxiliar2;
-            System.out.println("Entro sleeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeep");
-            try{
-                sleep(1000);
-            }catch(Exception ex){
-
-            }
             return 1;
         }
         else{
-            if((Math.abs(auxiliar - auxiliar2) < 250)|| (auxiliar == 0)){
-                auxiliar = auxiliar2;
-                return 0;
-            }
-
             auxiliar = auxiliar2;
-            return -1;
-        }
-
-
-        // if (pos_estado == 0){ 
-        //     if (nuevo_pos_estado == 0){
-        //         if((accion== ACCION_IZQ_M15_DER_10)||
-        //             (accion== ACCION_IZQ_M15_DER_15)||
-        //             (accion== ACCION_IZQ_M15_DER_20)||
-        //             (accion== ACCION_IZQ_10_DER_M15)||
-        //             (accion== ACCION_IZQ_15_DER_M15)||
-        //             (accion== ACCION_IZQ_20_DER_M15))
-        //             return -1;
-        //         else 
-        //             return 0;
-        //     }
-        //     else{
-        //         return -1;
-        //     }
-        // }
-        // else{
-        //     if (nuevo_pos_estado == 0){
-        //         try{
-        //             sleep(50000);
-        //         }catch(Exception ex){
-
-        //         }
-        //         return 1;
-        //     }
-        //     else{
-        //         return -1;
-        //     }
-        // }
-     //   }
+            if(sum_sensor_Front > 1000||sum_sensor_Back > 850){
+                System.out.println("Recompensa negativa");
+                return -1;
+            }
+            System.out.println("Recompensa neutra");
+            return 0;
+        }        
     }
-    
+
      private double getMaxQ(int estado){         
         double max_val=tabla_q[estado][0];
 
